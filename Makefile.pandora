@@ -1,0 +1,213 @@
+O      = o
+
+ZODTTD=1
+
+ifdef ZODTTD
+	PREFIX 	= arm-none-linux-gnueabi-
+  CC     	= ${PREFIX}gcc
+  CXX    	= ${PREFIX}g++
+  AS     	= ${PREFIX}g++
+  STRIP  	= ${PREFIX}strip
+  INC    	= 
+  INCS   	= ${INC}
+  LD     	= ${PREFIX}g++
+  LDFLAGS	= -lm -ldl -lpthread -lz -static
+endif
+
+#STD_INTERP=1
+#NAME  = psx4all_std_int.gpe
+
+STD_PSXREC=1
+NAME  = psx4all_std_rec
+
+PROG   = $(NAME)
+
+USE_HLE=1
+NEWSPU=1
+GPUAPI=1
+#NEWGPU=1
+#DUMMYGPU=1
+
+#NULLSPU=1
+
+DEFS  += -DUSE_OLD_COUNTERS
+DEFS  += -DNOSOUND
+
+#DEFS += -DNO_RENDER
+
+#DEFS += -DEMU_LOG -DLOG_STDOUT
+#DEFS += -DPROFILER_PSX4ALL
+#DEFS += -DPROFILER_SDL
+#DEFS += -DAUTOEVENTS=4000
+#DEFS += -DMAXFRAMES=4000
+#DEFS += -DNOTHREADLIB 
+#DEFS += -DGP2X_SDLWRAPPER_NODOUBLEBUFFER
+
+
+ifdef STD_INTERP
+DEFS += -DINTERP
+endif
+
+ifdef STD_PSXREC
+DEFS += -DDYNAREC
+endif
+
+ifdef USE_HLE
+DEFS += -DWITH_HLE
+endif
+
+DEFAULT_CFLAGS = -DPANDORA -DGP2X -DARM_ARCH -DDATA_PREFIX=\"example/\" -DROM_PREFIX=\"./\" -Isrc -Isrc/pandora -I$(INCS)
+
+MORE_CFLAGS = -mfpu=neon -ffast-math -ftree-vectorize -mcpu=cortex-a8 -mfloat-abi=softfp -O3
+MORE_CFLAGS += --param max-inline-insns-single=800 -ftemplate-depth-36
+MORE_CFLAGS += -fstrict-aliasing -mstructure-size-boundary=32 -fexpensive-optimizations 
+MORE_CFLAGS += -fweb -frename-registers -fomit-frame-pointer 
+MORE_CFLAGS += -falign-functions=32 -falign-loops -falign-labels -falign-jumps
+MORE_CFLAGS += -finline -finline-functions -fno-builtin -fno-common
+MORE_CFLAGS += -funroll-loops -fstrength-reduce 
+MORE_CFLAGS += -fsigned-char
+MORE_CFLAGS += -DLSB_FIRST -DSIGNED_SAMPLES -DACORN -DINLINE="inline"
+MORE_CFLAGS +=	
+
+MORE_CFLAGS += -DMITSHM $(DEFS) -DUNZIP_SUPPORT -DZLIB -DHAVE_MKSTEMP -DHAVE_STRINGS_H 
+#'-DACCEPT_SIZE_T=int'
+
+CFLAGS  = $(DEFAULT_CFLAGS) $(MORE_CFLAGS)
+CPPFLAGS  = $(DEFAULT_CFLAGS) $(MORE_CFLAGS)
+ASFLAGS  = -c $(DEFAULT_CFLAGS) $(MORE_CFLAGS)
+
+#all: $(PROG)
+
+ASM_OBJS =  src/arm/memcmp.S   \
+            src/arm/memcpy.S   \
+            src/arm/memset.S   \
+            src/arm/strcmp.S   \
+            src/arm/strlen.S   \
+            src/arm/strncmp.S
+
+OBJS =	\
+	src/main.o \
+	src/cdrom.o \
+	src/decode_xa.o \
+	src/mdec.o \
+	src/misc.o \
+	src/bios.o \
+	src/dma.o \
+	src/hle.o \
+	src/hw.o \
+	src/components.o \
+	src/pad.o \
+	src/sio.o \
+	src/spu.o \
+	src/pandora/minimal.o
+	
+OBJS += 	src/cdr/oldversion/cdriso.o 
+
+#OBJS += 	src/cdr/CDDAData.o 
+#OBJS += 	src/cdr/FileInterface.o 
+#OBJS += 	src/cdr/Globals.o 
+#OBJS += 	src/cdr/Open.o 
+#OBJS += 	src/cdr/SubchannelData.o 
+#OBJS += 	src/cdr/TrackParser.o 
+#OBJS += 	src/cdr/unrar/unrarlib.o 
+#OBJS += 	src/cdr/bzip/blocksort.o 
+#OBJS += 	src/cdr/bzip/bzlib.o 
+#OBJS += 	src/cdr/bzip/compress.o 
+#OBJS += 	src/cdr/bzip/crctable.o 
+#OBJS += 	src/cdr/bzip/decompress.o 
+#OBJS += 	src/cdr/bzip/huffman.o 
+#OBJS += 	src/cdr/bzip/randtable.o 
+
+ifdef NULLSPU
+OBJS += src/nullspu/spu_core.o 
+else
+ifdef NEWSPU
+OBJS +=	\
+	src/franspu/spu.o \
+	src/franspu/spu_dma.o \
+	src/franspu/spu_registers.o \
+	src/franspu/spu_output.o
+else
+OBJS +=	\
+	src/petespu/stdafx.o \
+	src/petespu/adsr.o \
+	src/petespu/spu_dma.o \
+	src/petespu/freeze.o \
+	src/petespu/oss.o \
+	src/petespu/registers.o \
+	src/petespu/reverb.o \
+	src/petespu/spu.o \
+	src/petespu/xa.o 
+endif
+endif
+
+ifdef STD_INTERP
+OBJS += src/interpreter/interpreter.o 
+OBJS +=	src/r3000a_new.o
+OBJS +=	src/counters_new.o
+OBJS +=	src/gte_pcsx.o
+OBJS +=	src/gte_mame.o
+OBJS +=	src/mem.o
+endif
+
+ifdef STD_PSXREC
+OBJS += src/interpreter/interpreter.o 
+#OBJS += src/recompiler2/arm/arm_std_rec_big.o 
+OBJS += src/recompiler3/arm/recompiler.o 
+OBJS +=	src/r3000a_new.o
+OBJS +=	src/counters_new.o
+OBJS +=	src/gte_pcsx.o
+OBJS +=	src/gte_mame.o
+OBJS +=	src/mem.o
+OBJS += src/recompiler3/arm/disasm.o 
+OBJS += src/recompiler3/arm/mips_disasm.o 
+ASM_OBJS += src/recompiler3/arm/arm.S 
+endif
+
+
+GPU_OBJS =  src/gpuAPI/gpuAPI.o               \
+            src/gpuAPI/newGPU/newGPU.o 	      \
+            src/gpuAPI/newGPU/fixed.o         \
+            src/gpuAPI/newGPU/core_Command.o  \
+            src/gpuAPI/newGPU/core_Dma.o      \
+            src/gpuAPI/newGPU/core_Draw.o     \
+            src/gpuAPI/newGPU/core_Misc.o     \
+            src/gpuAPI/newGPU/raster_Sprite.o \
+            src/gpuAPI/newGPU/raster_Poly.o   \
+            src/gpuAPI/newGPU/raster_Line.o   \
+            src/gpuAPI/newGPU/raster_Image.o  \
+            src/gpuAPI/newGPU/inner.o
+
+ASM_OBJS += src/gpuAPI/newGPU/ARM_asm.S
+
+
+%.o: %.cpp
+	${CXX} -fpeel-loops ${CFLAGS} -c -o $@ $<
+
+#%.o: %.s
+#	${CXX} -fpeel-loops ${CFLAGS} -c -o $@ $<
+
+%.o: %.c
+	${CC} -fpeel-loops ${CFLAGS} -c -o $@ $<
+
+all:	${OBJS} ${GPU_OBJS}
+	${LD} -O3 ${ASM_OBJS} ${CFLAGS} ${GPU_OBJS} ${OBJS} -o ${PROG} ${LDFLAGS}  
+#	${STRIP} ${PROG}
+
+
+#$(PROG): $(OBJS) $(GPU_OBJS) $(ASM_OBJS)
+#	$(LD) $(CFLAGS) -o $(PROG) $(OBJS) $(GPU_OBJS) $(ASM_OBJS) $(LDFLAGS) -s
+#	$(STRIP) $(PROG)
+
+run: $(PROG)
+	./$(PROG) example
+
+clean:
+	$(RM) $(PROG) $(OBJS) $(GPU_OBJS)
+
+test:
+	$(CXX) $(CFLAGS) -S -o src/arm/arm_std_rec.S src/arm/arm_std_rec.cpp
+
+test2:
+	$(CXX) $(CFLAGS) -S -o src/misc.S src/misc.cpp
+

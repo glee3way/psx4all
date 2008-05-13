@@ -1,0 +1,48 @@
+LIBRARY      "cdrmooby2"
+DESCRIPTION  'cdrmooby2 cd plugin'
+EXPORTS
+    ; Explicit exports can go here
+	PSEgetLibType		@2
+	PSEgetLibName		@3
+	PSEgetLibVersion	@4
+	CDRinit				@5
+	CDRshutdown			@6
+	CDRopen				@7
+	CDRclose			@8
+	CDRconfigure		@9
+	CDRabout			@10
+	CDRtest				@11
+    CDRgetTN			@12
+    CDRgetTD		    @13
+    CDRreadTrack	    @14
+    CDRgetBuffer		@15
+    CDRplay				@16
+    CDRstop				@17
+	CDRgetDriveLetter	@18
+	CDRgetStatus		@19
+    CDRgetBufferSub     @20
+    CD_Read				@21
+    CD_Stop				@22
+    CD_Play				@23
+    CD_GetTD			@24
+    CD_GetTN			@25
+    CD_Open				@26
+    CD_Close			@27
+    CD_Wait				@28
+    CD_Configure		@29
+    CD_About			@30
+	CD_GetSeek			@31
+    PS2EgetLibType      @32
+    PS2EgetLibVersion   @33
+    PS2EgetLibName      @34
+	CDVDinit            @35
+    CDVDopen            @36
+    CDVDclose           @37
+    CDVDshutdown        @38
+    CDVDreadTrack       @39
+    CDVDgetBuffer       @40
+    CDVDgetTN           @41
+    CDVDgetTD           @42
+    CDVDconfigure       @43
+    CDVDabout           @44
+    CDVDtest            @45

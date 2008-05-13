@@ -1,0 +1,128 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes" ?>
+<CodeBlocks_project_file>
+	<FileVersion major="1" minor="6" />
+	<Project>
+		<Option title="psx4all_sdl" />
+		<Option pch_mode="2" />
+		<Option compiler="gcc" />
+		<Build>
+			<Target title="Debug">
+				<Option output="bin\Debug\psx4all_sdl" prefix_auto="1" extension_auto="1" />
+				<Option object_output="obj\Debug\" />
+				<Option type="1" />
+				<Option compiler="gcc" />
+				<Compiler>
+					<Add option="-g" />
+					<Add directory="src" />
+					<Add directory="src\sdl" />
+				</Compiler>
+			</Target>
+			<Target title="Release">
+				<Option output="bin\Release\psx4all_sdl" prefix_auto="1" extension_auto="1" />
+				<Option object_output="obj\Release\" />
+				<Option type="0" />
+				<Option compiler="gcc" />
+				<Compiler>
+					<Add option="-O2" />
+					<Add directory="src" />
+					<Add directory="src\sdl" />
+				</Compiler>
+				<Linker>
+					<Add option="-s" />
+				</Linker>
+			</Target>
+		</Build>
+		<Compiler>
+			<Add option="-Wall" />
+			<Add option='-DINLINE=&quot;inline&quot; -DUNZIP_SUPPORT -DZLIB -DHAVE_MKSTEMP -DHAVE_STRINGS_H' />
+			<Add option="-fno-exceptions -fno-rtti" />
+			<Add option="-DUSE_OLD_COUNTERS -DINTERP -DSDL -DNOSOUND" />
+			<Add directory="H:\mingw\include" />
+		</Compiler>
+		<Linker>
+			<Add library="mingw32" />
+			<Add library="SDLmain" />
+			<Add library="SDL.dll" />
+			<Add library="z" />
+			<Add directory="H:\mingw\lib" />
+		</Linker>
+		<Unit filename="src\bios.cpp" />
+		<Unit filename="src\bios.h" />
+		<Unit filename="src\cdr\oldversion\cdriso.cpp" />
+		<Unit filename="src\cdr\oldversion\cdriso.h" />
+		<Unit filename="src\cdrom.cpp" />
+		<Unit filename="src\cdrom.h" />
+		<Unit filename="src\common.h" />
+		<Unit filename="src\components.cpp" />
+		<Unit filename="src\components.h" />
+		<Unit filename="src\counters_new.cpp" />
+		<Unit filename="src\counters_new.h" />
+		<Unit filename="src\decode_xa.cpp" />
+		<Unit filename="src\decode_xa.h" />
+		<Unit filename="src\dma.cpp" />
+		<Unit filename="src\dma.h" />
+		<Unit filename="src\franspu\spu.cpp" />
+		<Unit filename="src\franspu\spu.h" />
+		<Unit filename="src\franspu\spu_adsr.h" />
+		<Unit filename="src\franspu\spu_dma.cpp" />
+		<Unit filename="src\franspu\spu_output_sdl.cpp" />
+		<Unit filename="src\franspu\spu_registers.cpp" />
+		<Unit filename="src\franspu\spu_xa.h" />
+		<Unit filename="src\gpuAPI\gpuAPI.cpp" />
+		<Unit filename="src\gpuAPI\gpuAPI.h" />
+		<Unit filename="src\gpuAPI\newGPU\core_Command.cpp" />
+		<Unit filename="src\gpuAPI\newGPU\core_Dma.cpp" />
+		<Unit filename="src\gpuAPI\newGPU\core_Draw.cpp" />
+		<Unit filename="src\gpuAPI\newGPU\core_Misc.cpp" />
+		<Unit filename="src\gpuAPI\newGPU\fixed.cpp" />
+		<Unit filename="src\gpuAPI\newGPU\fixed.h" />
+		<Unit filename="src\gpuAPI\newGPU\inner.cpp" />
+		<Unit filename="src\gpuAPI\newGPU\inner_Blit.h" />
+		<Unit filename="src\gpuAPI\newGPU\inner_Pixel.h" />
+		<Unit filename="src\gpuAPI\newGPU\inner_Poly.h" />
+		<Unit filename="src\gpuAPI\newGPU\inner_Sprite.h" />
+		<Unit filename="src\gpuAPI\newGPU\newGPU.cpp" />
+		<Unit filename="src\gpuAPI\newGPU\newGPU.h" />
+		<Unit filename="src\gpuAPI\newGPU\op_Blend.h" />
+		<Unit filename="src\gpuAPI\newGPU\op_Light.h" />
+		<Unit filename="src\gpuAPI\newGPU\op_Texture.h" />
+		<Unit filename="src\gpuAPI\newGPU\profiller.h" />
+		<Unit filename="src\gpuAPI\newGPU\raster.h" />
+		<Unit filename="src\gpuAPI\newGPU\raster_Image.cpp" />
+		<Unit filename="src\gpuAPI\newGPU\raster_Line.cpp" />
+		<Unit filename="src\gpuAPI\newGPU\raster_Poly.cpp" />
+		<Unit filename="src\gpuAPI\newGPU\raster_Sprite.cpp" />
+		<Unit filename="src\gte_mame.cpp" />
+		<Unit filename="src\gte_mame.h" />
+		<Unit filename="src\gte_pcsx.cpp" />
+		<Unit filename="src\gte_pcsx.h" />
+		<Unit filename="src\hw.cpp" />
+		<Unit filename="src\hw.h" />
+		<Unit filename="src\interpreter\interpreter.cpp" />
+		<Unit filename="src\main.cpp" />
+		<Unit filename="src\mdec.cpp" />
+		<Unit filename="src\mdec.h" />
+		<Unit filename="src\mem.cpp" />
+		<Unit filename="src\mem.h" />
+		<Unit filename="src\misc.cpp" />
+		<Unit filename="src\misc.h" />
+		<Unit filename="src\pad.cpp" />
+		<Unit filename="src\psxTypes.h" />
+		<Unit filename="src\r3000a_new.cpp" />
+		<Unit filename="src\r3000a_new.h" />
+		<Unit filename="src\sdl\minimal.cpp" />
+		<Unit filename="src\sdl\minimal.h" />
+		<Unit filename="src\sio.cpp" />
+		<Unit filename="src\sio.h" />
+		<Unit filename="src\spu.cpp" />
+		<Unit filename="src\spu.h" />
+		<Extensions>
+			<code_completion />
+			<envvars />
+			<debugger />
+			<wxsmith version="1">
+				<gui name="wxWidgets" src="" main="" init_handlers="necessary" language="CPP" />
+			</wxsmith>
+		</Extensions>
+	</Project>
+</CodeBlocks_project_file>
